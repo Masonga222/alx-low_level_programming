@@ -1,32 +1,31 @@
-#include <stdio.h>
 #include "main.h"
-/**
- * main - main function
- *
- * Return: nothing
- */
-int main(void)
+#include "6-abs.c"
+#include <stdio.h>
+
+void print_to_98(int n)
 {
-	int counter = 2;
+	int i;
 
-	float a = 1;
-	float b = a + 1;
-	float c = a + b;
-
-	printf("%.0f, ", a);
-	printf("%.0f, ", b);
-	while (counter < 98)
+	if (n > 98)
 	{
-		counter++;
-		printf("%.0f", c);
-		a = b;
-		b = c;
-		c = a + b;
-		if (counter < 98)
+		for (i = n; i >= 98; i--)
 		{
-			printf(", ");
+			printf("%d", i);
+			if (i != 98)
+			{
+				printf(", ");
+			}
+		}
+	} else
+	{
+		for (i = n; i <= 98; i++)
+		{
+			printf("%d", i);
+			if (i != 98)
+			{
+				printf(", ");
+			}
 		}
 	}
 	printf("\n");
-	return (0);
 }
