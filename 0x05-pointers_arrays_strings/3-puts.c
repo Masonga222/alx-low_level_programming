@@ -1,17 +1,17 @@
-#include "main.h"
-#include "2-strlen.c"
+#include "holberton.h"
+
 /**
- * _puts - puts a string
- *
- * @str: string to print
+ * _puts - prints a string
+ * @str: a string, an array of characters
  */
 void _puts(char *str)
 {
-	int i;
+	int i = 0;
 
-	for (i = 0; *(str + i) != '\0'; i++)
+	for (i = 0; str[i] != '\0'; i++)
 	{
-		_putchar(*(str + i));
+		_putchar(str[i]);
 	}
+
 	_putchar('\n');
 }
