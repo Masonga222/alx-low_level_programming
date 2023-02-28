@@ -1,27 +1,40 @@
 #include "main.h"
+
 /**
- * print_rev - imprime en reversa
- * @s: string
- * return: 0
+ * _atoi - Convert a string to an integer.
+ * @s: The pointer to convert
+ *
+ * Return: A integer
  */
-void print_rev(char *s)
+int _atoi(char *s)
 {
-        int longi = 0;
-        int o;
+	int c = 0;
+	unsigned int ni = 0;
+	int min = 1;
+	int isi = 0;
 
+	while (s[c])
+	{
+		if (s[c] == 45)
+		{
+			min *= -1;
+		}
 
-        while (*s != '\0')
-        {
-                longi++;
-                s++;
-        }
-        s--;
-        for (o = longi; o > 0; o--)
-        {
-                _putchar(*s);
-                s--;
-        }
+		while (s[c] >= 48 && s[c] <= 57)
+		{
+			isi = 1;
+			ni = (ni * 10) + (s[c] - '0');
+			c++;
+		}
 
+		if (isi == 1)
+		{
+			break;
+		}
 
-        _putchar('\n');
+		c++;
+	}
+
+	ni *= min;
+	return (ni);
 }
