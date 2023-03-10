@@ -1,61 +1,87 @@
-#include "main.h"
 #include <stdio.h>
+		
 #include <stdlib.h>
+		
+#include "main.h"
+		
 
+		
 /**
-* main - function to determine minimum number of coins needed to make change
-* @argc: argument to determine how many arguments to program are provided
-*
-* @argv: argument array with program name and arguments
-*
-* Return: (0)
-*/
-
+		
+ * main - prints the minimum number of coins to
+		
+ * make change for an amount of money
+		
+ * @argc: number of arguments
+		
+ * @argv: array of arguments
+		
+ *
+		
+ * Return: 0 (Success), 1 (Error)
+		
+ */
+		
 int main(int argc, char *argv[])
+		
 {
-	int change;
-	int coins = 0;
+		
+	int num, j, result;
+		
+	int coins[] = {25, 10, 5, 2, 1};
+		
 
+		
 	if (argc != 2)
+		
 	{
+		
 		printf("Error\n");
+		
 		return (1);
+		
 	}
-	change = atoi(argv[1]);
+		
 
-	if (change <= 0)
+		
+	num = atoi(argv[1]);
+		
+	result = 0;
+		
+
+		
+	if (num < 0)
+		
 	{
-		printf("%d\n", 0);
+		
+		printf("0\n");
+		
+		return (0);
+		
 	}
-	else
+		
+
+		
+	for (j = 0; j < 5 && num >= 0; j++)
+		
 	{
-		coins += divide_change(&change, 25);
-		coins += divide_change(&change, 10);
-		coins += divide_change(&change, 5);
-		coins += divide_change(&change, 2);
-		coins += divide_change(&change, 1);
-		printf("%d\n", coins);
+		
+		while (num >= coins[j])
+		
+		{
+		
+			result++;
+		
+			num -= coins[j];
+		
+		}
+		
 	}
+		
+
+		
+	printf("%d\n", result);
+		
 	return (0);
-}
-
-/**
-* divide_change - subtracts off change while still divisible by cent amount
-* @change: total change left to make
-*
-* @cent: largest cent to make change with
-*
-* Return: coins needed to make change with that cent
-*/
-
-int divide_change(int *change, int cent)
-{
-	int coins = 0;
-
-	while (*change >= cent)
-	{
-		coins++;
-		*change -= cent;
-	}
-	return (coins);
+		
 }
