@@ -1,126 +1,166 @@
 #include "main.h"
-#include <stdlib.h>
 #include <stdio.h>
-#include <ctype.h>
+#include <stdlib.h>
 
 /**
- * _is_zero - determines if any number is zero
- * @argv: argument vector.
+ * main - function to multiply two positive numbers together
+ * @argc: number of arguments passed to function, including name
  *
- * Return: no return.
+ * @argv: array of arguments passed to function
+ *
+ * Return: 0 if successful, 98 if failed
  */
-void _is_zero(char *argv[])
+
+int main(int argc, char *argv[])
 {
-	int i, isn1 = 1, isn2 = 1;
+	unsigned long int num1, num2, product;
+	int digit;
+	char *array;
+	char *errorarray = "Error";
 
-	for (i = 0; argv[1][i]; i++)
-		if (argv[1][i] != '0')
-		{
-			isn1 = 0;
-			break;
-		}
-
-	for (i = 0; argv[2][i]; i++)
-		if (argv[2][i] != '0')
-		{
-			isn2 = 0;
-			break;
-		}
-
-	if (isn1 == 1 || isn2 == 1)
+	if (argc != 3)
 	{
-		printf("0\n");
-		exit(0);
+		error(errorarray);
+		exit(98);
 	}
+	if (digit_check(argv[1]) == 0 || digit_check(argv[2]) == 0)
+	{
+		error(errorarray);
+		exit(98);
+	}
+	else
+	{
+		num1 = a_to_int(argv[1]);
+		num2 = a_to_int(argv[2]);
+	}
+	product = num1 * num2;
+	digit = digit_size(product, 1);
+	array = malloc(digit * sizeof(char) + 1);
+	if (array == NULL)
+	{
+		error(errorarray);
+		exit(98);
+	}
+	array = int_to_a(product, array, digit);
+	print_array(array);
+	free(array);
+	return (0);
 }
 
 /**
- * _initialize_array - set memery to zero in a new array
- * @ar: char array.
- * @lar: length of the char array.
+ * error - function to print Error and exit with 98 if program fails
+ * @array: character array to print
  *
- * Return: pointer of a char array.
  */
-char *_initialize_array(char *ar, int lar)
+
+void error(char *array)
 {
 	int i = 0;
 
-	for (i = 0; i < lar; i++)
-		ar[i] = '0';
-	ar[lar] = '\0';
-	return (ar);
+	for (i = 0; array[i]; i++)
+		_putchar(array[i]);
+	_putchar('\n');
 }
 
 /**
- * _checknum - determines length of the number
- * and checks if number is in base 10.
- * @argv: arguments vector.
- * @n: row of the array.
+ * digit_check - checks if number is composed of only digits
+ * @num: character pointer to argument
  *
- * Return: length of the number.
+ * Return: 1 if all digits and 0 if not a digit
  */
-int _checknum(char *argv[], int n)
+
+int digit_check(char *num)
 {
-	int ln;
+	int i;
 
-	for (ln = 0; argv[n][ln]; ln++)
-		if (!isdigit(argv[n][ln]))
-		{
-			printf("Error\n");
-			exit(98);
-		}
-
-	return (ln);
-}
-
-/**
- * main - Entry point.
- * program that multiplies two positive numbers.
- * @argc: number of arguments.
- * @argv: arguments vector.
- *
- * Return: 0 - success.
- */
-int main(int argc, char *argv[])
-{
-	int ln1, ln2, lnout, add, addl, i, j, k, ca;
-	char *nout;
-
-	if (argc != 3)
-		printf("Error\n"), exit(98);
-	ln1 = _checknum(argv, 1), ln2 = _checknum(argv, 2);
-	_is_zero(argv), lnout = ln1 + ln2, nout = malloc(lnout + 1);
-	if (nout == NULL)
-		printf("Error\n"), exit(98);
-	nout = _initialize_array(nout, lnout);
-	k = lnout - 1, i = ln1 - 1, j = ln2 - 1, ca = addl = 0;
-	for (; k >= 0; k--, i--)
+	for (i = 0; num[i]; i++)
 	{
-		if (i < 0)
-		{
-			if (addl > 0)
-			{
-				add = (nout[k] - '0') + addl;
-				if (add > 9)
-					nout[k - 1] = (add / 10) + '0';
-				nout[k] = (add % 10) + '0';
-			}
-			i = ln1 - 1, j--, addl = 0, ca++, k = lnout - (1 + ca);
-		}
-		if (j < 0)
-		{
-			if (nout[0] != '0')
-				break;
-			lnout--;
-			free(nout), nout = malloc(lnout + 1), nout = _initialize_array(nout, lnout);
-			k = lnout - 1, i = ln1 - 1, j = ln2 - 1, ca = addl = 0;
-		}
-		if (j >= 0)
-		{
-			add = ((argv[1][i] - '0') * (argv[2][j] - '0')) + (nout[k] - '0') + addl;
-			addl = add / 10, nout[k] = (add % 10) + '0';
-		}
+		if (num[i] >= '0' && num[i] <= '9')
+			continue;
+		else
+			return (0);
 	}
-	printf("%s\n", nout);
-	return (0);
+	return (1);
+}
+
+/**
+ * a_to_int - changes digit characters to int
+ * @s: array of characters
+ *
+ * Return: integer value of characters
+ */
+
+unsigned long int a_to_int(char *s)
+{
+	int i = 0, size = 0, place = 1;
+	unsigned long int num = 0;
+
+	for (i = 0; s[i]; i++, size++)
+		continue;
+	for (i = (size - 1); i >= 0; i--)
+	{
+		num += ((s[i] - '0') * place);
+		place *= 10;
+	}
+	return (num);
+}
+
+/**
+ * digit_size - determines how many digits make up a number
+ * @num: input number
+ *
+ * @digits: input digit counter
+ *
+ * Return: number of digit places
+ */
+
+int digit_size(unsigned long int num, int digits)
+{
+	while (num / 10 != 0)
+	{
+		digits++;
+		num /= 10;
+	}
+	return (digits);
+}
+
+/**
+ * int_to_a - changes integer to character array
+ * @num: input integer
+ *
+ * @s: input string to assign character value of num to
+ *
+ * @digits: input number of digits
+ *
+ * Return: array of characters representing number
+ */
+
+char *int_to_a(unsigned long int num, char *s, int digits)
+{
+	int i = 0;
+
+	for (i = (digits - 1); i >= 0; i--)
+	{
+		s[i] = (num % 10) + '0';
+		num /= 10;
+	}
+	s[digits] = '\0';
+	return (s);
+}
+
+/**
+ * print_array - prints array of characters
+ * @s: array of characters
+ *
+ */
+
+void print_array(char *s)
+{
+	int i = 0;
+
+	for (i = 0; s[i]; i++)
+	{
+		_putchar(s[i]);
+	}
+	_putchar('\n');
 }
