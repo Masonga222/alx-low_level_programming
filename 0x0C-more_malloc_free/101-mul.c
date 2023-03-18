@@ -1,166 +1,101 @@
 #include "main.h"
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+
+#define ERR_MSG "Error"
 
 /**
- * main - function to multiply two positive numbers together
- * @argc: number of arguments passed to function, including name
+ * is_digit - checks if a string contains a non-digit char
+ * @s: string to be evaluated
  *
- * @argv: array of arguments passed to function
- *
- * Return: 0 if successful, 98 if failed
+ * Return: 0 if a non-digit is found, 1 otherwise
  */
-
-int main(int argc, char *argv[])
-{
-	unsigned long int num1, num2, product;
-	int digit;
-	char *array;
-	char *errorarray = "Error";
-
-	if (argc != 3)
-	{
-		error(errorarray);
-		exit(98);
-	}
-	if (digit_check(argv[1]) == 0 || digit_check(argv[2]) == 0)
-	{
-		error(errorarray);
-		exit(98);
-	}
-	else
-	{
-		num1 = a_to_int(argv[1]);
-		num2 = a_to_int(argv[2]);
-	}
-	product = num1 * num2;
-	digit = digit_size(product, 1);
-	array = malloc(digit * sizeof(char) + 1);
-	if (array == NULL)
-	{
-		error(errorarray);
-		exit(98);
-	}
-	array = int_to_a(product, array, digit);
-	print_array(array);
-	free(array);
-	return (0);
-}
-
-/**
- * error - function to print Error and exit with 98 if program fails
- * @array: character array to print
- *
- */
-
-void error(char *array)
+int is_digit(char *s)
 {
 	int i = 0;
 
-	for (i = 0; array[i]; i++)
-		_putchar(array[i]);
-	_putchar('\n');
-}
-
-/**
- * digit_check - checks if number is composed of only digits
- * @num: character pointer to argument
- *
- * Return: 1 if all digits and 0 if not a digit
- */
-
-int digit_check(char *num)
-{
-	int i;
-
-	for (i = 0; num[i]; i++)
+	while (s[i])
 	{
-		if (num[i] >= '0' && num[i] <= '9')
-			continue;
-		else
+		if (s[i] < '0' || s[i] > '9')
 			return (0);
+		i++;
 	}
 	return (1);
 }
 
 /**
- * a_to_int - changes digit characters to int
- * @s: array of characters
+ * _strlen - returns the length of a string
+ * @s: string to evaluate
  *
- * Return: integer value of characters
+ * Return: the length of the string
  */
-
-unsigned long int a_to_int(char *s)
-{
-	int i = 0, size = 0, place = 1;
-	unsigned long int num = 0;
-
-	for (i = 0; s[i]; i++, size++)
-		continue;
-	for (i = (size - 1); i >= 0; i--)
-	{
-		num += ((s[i] - '0') * place);
-		place *= 10;
-	}
-	return (num);
-}
-
-/**
- * digit_size - determines how many digits make up a number
- * @num: input number
- *
- * @digits: input digit counter
- *
- * Return: number of digit places
- */
-
-int digit_size(unsigned long int num, int digits)
-{
-	while (num / 10 != 0)
-	{
-		digits++;
-		num /= 10;
-	}
-	return (digits);
-}
-
-/**
- * int_to_a - changes integer to character array
- * @num: input integer
- *
- * @s: input string to assign character value of num to
- *
- * @digits: input number of digits
- *
- * Return: array of characters representing number
- */
-
-char *int_to_a(unsigned long int num, char *s, int digits)
+int _strlen(char *s)
 {
 	int i = 0;
 
-	for (i = (digits - 1); i >= 0; i--)
+	while (s[i] != '\0')
 	{
-		s[i] = (num % 10) + '0';
-		num /= 10;
+		i++;
 	}
-	s[digits] = '\0';
-	return (s);
+	return (i);
 }
 
 /**
- * print_array - prints array of characters
- * @s: array of characters
- *
+ * errors - handles errors for main
  */
-
-void print_array(char *s)
+void errors(void)
 {
-	int i = 0;
+	printf("Error\n");
+	exit(98);
+}
 
-	for (i = 0; s[i]; i++)
+/**
+ * main - multiplies two positive numbers
+ * @argc: number of arguments
+ * @argv: array of arguments
+ *
+ * Return: always 0 (Success)
+ */
+int main(int argc, char *argv[])
+{
+	char *s1, *s2;
+	int len1, len2, len, i, carry, digit1, digit2, *result, a = 0;
+
+	s1 = argv[1], s2 = argv[2];
+	if (argc != 3 || !is_digit(s1) || !is_digit(s2))
+		errors();
+	len1 = _strlen(s1);
+	len2 = _strlen(s2);
+	len = len1 + len2 + 1;
+	result = malloc(sizeof(int) * len);
+	if (!result)
+		return (1);
+	for (i = 0; i <= len1 + len2; i++)
+		result[i] = 0;
+	for (len1 = len1 - 1; len1 >= 0; len1--)
 	{
-		_putchar(s[i]);
+		digit1 = s1[len1] - '0';
+		carry = 0;
+		for (len2 = _strlen(s2) - 1; len2 >= 0; len2--)
+		{
+			digit2 = s2[len2] - '0';
+			carry += result[len1 + len2 + 1] + (digit1 * digit2);
+			result[len1 + len2 + 1] = carry % 10;
+			carry /= 10;
+		}
+		if (carry > 0)
+			result[len1 + len2 + 1] += carry;
 	}
+	for (i = 0; i < len - 1; i++)
+	{
+		if (result[i])
+			a = 1;
+		if (a)
+			_putchar(result[i] + '0');
+	}
+	if (!a)
+		_putchar('0');
 	_putchar('\n');
+	free(result);
+	return (0);
 }
