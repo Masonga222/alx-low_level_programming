@@ -11,7 +11,7 @@
  */
 int append_text_to_file(const char *filename, char *text_content)
 {
-	int m, n, i = 0;
+	int o, p, i = 0;
 
 	if (filename == NULL)
 		return (-1);
@@ -22,13 +22,13 @@ int append_text_to_file(const char *filename, char *text_content)
 			i++;
 	}
 
-	m = open(filename, O_WRONLY | O_APPEND);
-	n = write(m, text_content, i);
+	o = open(filename, O_WRONLY | O_APPEND);
+	p = write(o, text_content, i);
 
-	if (m == -1 || n == -1)
+	if (o == -1 || p == -1)
 		return (-1);
 
-	close(m);
+	close(o);
 
 	return (1);
 }
