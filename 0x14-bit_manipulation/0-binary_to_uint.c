@@ -1,28 +1,25 @@
-#include "main.h"
-#include "math.h"
+include "main.h"
 
 /**
- * binary_to_uint - converts a binary number into an unsigned int
- * @b: type const char pointer of one bit
- * function takes in a null-terminated string of 1s and 0s
- * Return: converted number, or 0 if one or more char in str b that is not 0/1
+ * binary_to_uint - converts a binary to decimal
+ * @b: binary val to be converted
+ *
+ * Return: the converted num
  */
-
 unsigned int binary_to_uint(const char *b)
 {
-	unsigned int n = 0;
-	unsigned int dec = 0;
+	int j;
+	unsigned int Sum = 0;
 
-	if (b == NULL)
+	if (!b)
 		return (0);
-	while (*(b + n) != '\0')
+
+	for (j = 0; b[j]; j++)
 	{
-		if (*(b + n) != '0' && *(b + n) != '1')
+		if (b[j] < '0' || b[j] > '1')
 			return (0);
-		dec <<= 1;
-		if (*(b + n) == '1')
-			dec ^= 1;
-		n++;
+		Sum = 2 * Sum + (b[j] - '0');
 	}
-	return (dec);
+
+	return (Sum);
 }
