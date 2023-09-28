@@ -1,23 +1,17 @@
-#include <stdio.h>
 #include "main.h"
 
-/**
- * main - check the code
- *
- * Return: Always 0.
- */
-int main(void)
-{
-    unsigned long int n;
 
-    n = 1024;
-    set_bit(&n, 5);
-    printf("%lu\n", n);
-    n = 0;
-    set_bit(&n, 10);
-    printf("%lu\n", n);
-    n = 98;
-    set_bit(&n, 0);
-    printf("%lu\n", n);
-    return (0);
+/**
+* set_bit - This function sets a bit at a given index to 1
+* @n: pointer to the number to change
+* @index: index of the bit to set to 1
+*
+* Return: 1 for success, -1 for failure
+*/
+int set_bit(unsigned long int *n, unsigned int index)
+{
+if (index > 63)
+return (-1);
+*n = ((1UL << index) | *n);
+return (1);
 }
