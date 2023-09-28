@@ -20,7 +20,7 @@ for (var = 63; var >= 0; var--)
 {
 current = exclusive >> var;
 if (current & 1)
-i++;
+count++;
 }
-return (i);
+return (count);
 }
