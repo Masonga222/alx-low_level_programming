@@ -8,9 +8,9 @@
 */
 int get_endianness(void)
 {
-unsigned int var;
-char *m;
-var = 1;
-m = (char *) &var;
+unsigned int Myvar;
+char *y;
+Myvar = 1;
+y = (char *) &Myvar;
 return ((int)*y);
 }
